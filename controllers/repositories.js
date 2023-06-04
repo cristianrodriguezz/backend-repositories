@@ -3,7 +3,7 @@ const { repositoriesModel } = require("../models/index");
 const getRepositories = async (req, res) => {
   try {
     const data = await repositoriesModel.find({});
-    const res = await data;
+    const response = await data;
     res.send({ data });
   } catch (error) {
     console.log(error);
