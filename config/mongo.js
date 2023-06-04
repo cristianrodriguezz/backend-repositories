@@ -4,7 +4,7 @@ const dbConnect = () =>{
   const DB_URI = process.env.DB_URI
   try {
     mongoose.connect(
-      DB_URI,
+      "mongodb+srv://cristiandosespigas:CQDrE8xfTjMSO3hX@cluster0.knbokhx.mongodb.net/?retryWrites=true&w=majority",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
