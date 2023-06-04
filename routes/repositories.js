@@ -1,5 +1,5 @@
 const express = require("express");
-const { getRepositories, createRepositorie, updateRepositorie } = require("../../controllers/repositories");
+const { getRepositories, createRepositorie, updateRepositorie } = require("../controllers/repositories");
 const router = express.Router();
 
 router.get("/",getRepositories)
