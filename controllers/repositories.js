@@ -1,4 +1,6 @@
+const { matchedData } = require("express-validator");
 const { repositoriesModel } = require("../models/index");
+const { handleHttpError } = require("../utils/handleError");
 
 const getRepositories = async (req, res) => {
   try {
@@ -10,29 +12,44 @@ const getRepositories = async (req, res) => {
     console.log("no se pudo hacer esa");
   }
 };
-const getRepositorie = (req, res) => {};
-const createRepositorie = async (req, res) => {
-  const body = req.body;
-  console.log(body);
-  const data = await repositoriesModel.create(body);
-  res.send({ body });
+const getRepositoryById = async (req, res) => {
+  try {
+    req = matchedData(req)
+    const {id} = req
+    const data = await repositoriesModel.findById(id)
+    if(data === null){
+      handleHttpError(res, "NO_EXIST_REPOSITORY",404 )
+    }else{
+      res.send({data})
+    }
+  } catch (error) {
+    handleHttpError(res, "ERROR_GET_ITEM",404 )
+  }
 };
-const updateRepositorie = async (req, res) => {
+const createRepository = async (req, res) => {
+  try {
+    const body = req.body;
+    const data = await repositoriesModel.create(body);
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, "ERROR_CREATE_REPOSITORY", 400);
+  }
+};
+const updateRepository = async (req, res) => {
   const { body } = req;
   const { _id: id } = body;
-  console.log(id);
   const data = await repositoriesModel.updateOne(
     { _id: id },
     { $set: { ...body } }
   );
   res.send({ data });
 };
-const deleteRepositorie = (req, res) => {};
+const deleteRepository = (req, res) => {};
 
 module.exports = {
   getRepositories,
-  getRepositorie,
-  createRepositorie,
-  updateRepositorie,
-  deleteRepositorie,
+  getRepositoryById,
+  createRepository,
+  updateRepository,
+  deleteRepository,
 };

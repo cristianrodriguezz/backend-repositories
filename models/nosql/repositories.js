@@ -57,6 +57,9 @@ const RepositoriesScheme = new mongoose.Schema(
       },
     },
     skills:[String],
+    userId:{
+      type: mongoose.Types.ObjectId,
+    }
 
   },
   {
