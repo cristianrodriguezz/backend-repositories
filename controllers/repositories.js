@@ -17,11 +17,12 @@ const getRepositoryById = async (req, res) => {
     req = matchedData(req)
     const {id} = req
     const data = await repositoriesModel.findById(id)
-    if(data === null){
+    if(!data){
       handleHttpError(res, "NO_EXIST_REPOSITORY",404 )
-    }else{
-      res.send({data})
+      return
     }
+    res.send({data})
+    
   } catch (error) {
     handleHttpError(res, "ERROR_GET_ITEM",404 )
   }
