@@ -7,6 +7,12 @@ const { tokenSign } = require("../utils/handleJwt");
 const registerUser = async (req, res) => {
   try {
     req = matchedData(req);
+    
+    const userFind = await usersModel.findOne({email: req.email})
+    if(userFind){
+      handleHttpError(res, "Hay un email registrado con ese email", 400);
+      return
+    }
     const passwordHash = await encrypt(req.password);
     const body = { ...req, password: passwordHash };
     const dataUser = await usersModel.create(body);
@@ -16,6 +22,7 @@ const registerUser = async (req, res) => {
       token: await tokenSign(dataUser),
       user: dataUser,
     };
+
 
     res.send({ data });
   } catch (error) {
@@ -41,7 +48,7 @@ const loginUser = async (req, res) => {
       return;
     }
     user.set("password", undefined, { strict: false });
-
+ 
     const data = {
       token: await tokenSign(user),
       user,
