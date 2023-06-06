@@ -12,11 +12,11 @@ const getRepositories = async (req, res) => {
     console.log("no se pudo hacer esa");
   }
 };
-const getRepositoryById = async (req, res) => {
+const getRepositoryByUserId = async (req, res) => {
   try {
     req = matchedData(req)
     const {id} = req
-    const data = await repositoriesModel.findById(id)
+    const data = await repositoriesModel.find({userId : id})
     if(!data){
       handleHttpError(res, "NO_EXIST_REPOSITORY",404 )
       return
@@ -49,7 +49,7 @@ const deleteRepository = (req, res) => {};
 
 module.exports = {
   getRepositories,
-  getRepositoryById,
+  getRepositoryByUserId,
   createRepository,
   updateRepository,
   deleteRepository,
