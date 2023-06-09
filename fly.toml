@@ -1,6 +1,6 @@
-# fly.toml file generated for repo on 2023-06-04T09:56:43-03:00
+# fly.toml file generated for repos on 2023-06-06T19:43:30-03:00
 
-app = "repo"
+app = "repos"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
