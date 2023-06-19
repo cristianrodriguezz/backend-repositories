@@ -59,6 +59,7 @@ const loginUser = async (req, res) => {
     handleHttpError(res, "ERROR_LOGIN_USER", 400);
   }
 };
+
 const getAllUser = async (req, res) => {
   req = matchedData(req);
   const users = await usersModel.find({});
@@ -71,14 +72,18 @@ const updateUser = async (req, res) => {
   const user = await usersModel.findOneAndUpdate({_id: id}, body, { new: true })
   res.json({user})
 };
+const options = {
+  page: 1, 
+  limit: 10
+}
 const getAllRepositories = async (req, res) =>{
   try {
-    const data = await usersModel.find({}).select("name lastName social_media skills country experience favorite photo has_badge modality portfolio work")
+    const { limit , page } = req.query
+    const data = await usersModel.paginate({},{limit: limit, page: page})
     const response = await data;
     res.send({ data });
   } catch (error) {
     console.log(error);
-    console.log("no se pudo hacer esa");
   }
 }
 const getRepositorieById = async (req, res) =>{
@@ -96,5 +101,26 @@ const getRepositorieById = async (req, res) =>{
     handleHttpError(res, "ERROR_GET_ITEM",404 )
   }
 }
+const addFav =async (req,res) => {
+  try {
+    const {id} = req.params
+    const newFavorite = req.body
 
-module.exports = { registerUser, loginUser, getAllUser, updateUser , getAllRepositories, getRepositorieById};
+    const fav = await usersModel.findByIdAndUpdate(id, { $push: { favorites: newFavorite.favorites } })
+    res.send({fav})
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+const deleteAdd = async (req,res) => {
+  try {
+    const {id} = req.params
+    const favoriteIdToDelete = req.body
+    const fav = await usersModel.findByIdAndUpdate(id, { $pull: { favorites: favoriteIdToDelete.favorites } })
+    res.send({fav})
+  } catch (error) {
+    console.log(error)
+  }
+}
+module.exports = { registerUser, loginUser, getAllUser, updateUser , getAllRepositories, getRepositorieById, addFav, deleteAdd};

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moongosePaginate = require("mongoose-paginate-v2")
 
 const UserScheme = new mongoose.Schema(
   {
@@ -58,11 +59,11 @@ const UserScheme = new mongoose.Schema(
       default: null,
       require: true,
     },
-    favorite: {
-      type: Boolean,
+    favorites: [{
+      type: mongoose.Types.ObjectId,
       default: null,
       require: true,
-    },
+    }],
     has_badge: {
       type: Boolean,
       default: null,
@@ -92,5 +93,7 @@ const UserScheme = new mongoose.Schema(
     versionKey: false,
   }
 );
+
+UserScheme.plugin(moongosePaginate)
 
 module.exports = mongoose.model("users", UserScheme);

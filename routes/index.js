@@ -14,16 +14,6 @@ const a = fs.readdirSync(PATH_ROUTES).filter((file)=>{
   name !== 'index' &&  router.use(`/${name}`, require(`./${file}`))
 })
 
-console.log({a})
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router
