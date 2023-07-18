@@ -33,7 +33,8 @@ const loginUser = async (req, res) => {
     req = matchedData(req);
     const user = await usersModel
       .findOne({ email: req.email })
-      .select("password name role email social_media skills country experience favorite photo has_badge modality portfolio work");
+      .select("password name lastName role email skills country experience favorite photo has_badge modality portfolio work social_media")
+      .lean();
     if (!user) {
       handleHttpError(res, "USER_NOT_EXISTS", 404);
       return;
@@ -46,11 +47,13 @@ const loginUser = async (req, res) => {
       handleHttpError(res, "PASSWORD_INVALD", 401);
       return;
     }
-    user.set("password", undefined, { strict: false });
+
+    const userWithoutPassword = { ...user, password: undefined };
+    const userWithSocialMedia = { ...userWithoutPassword, social_media: user.social_media };
 
     const data = {
       token: await tokenSign(user),
-      user,
+      user: userWithSocialMedia,
     };
 
     res.send({ data });
@@ -59,6 +62,7 @@ const loginUser = async (req, res) => {
     handleHttpError(res, "ERROR_LOGIN_USER", 400);
   }
 };
+
 
 const getAllUser = async (req, res) => {
   req = matchedData(req);

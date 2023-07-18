@@ -72,17 +72,17 @@ const UserScheme = new mongoose.Schema(
     social_media: {
       linkedin: {
         type: String,
-
+        default: null,
         require: true,
       },
       git_hub: {
         type: String,
-
+        default: null,
         require: true,
       },
       twitter: {
         type: String,
-
+        default: null,
         require: true,
       },
     },
